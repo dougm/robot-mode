@@ -34,6 +34,13 @@
     map)
   "Keymap used in Robot mode.")
 
+(defconst robot-syntax-table
+  (let ((table (make-syntax-table)))
+    (modify-syntax-entry ?# "<" table)
+    (modify-syntax-entry ?\n ">" table)
+    table)
+  "Syntax table for Robot mode.")
+
 ;; robot-font-lock-keywords as defined in the original robot-mode.el
 (defvar robot-font-lock-keywords
   '(
@@ -93,6 +100,7 @@ NAME if given is used as the robot test name."
   "Major mode for editing and running Robot tests.
 
 \\{robot-mode-map}"
+  :syntax-table robot-syntax-table
   (set (make-local-variable 'comment-start) "#")
   (set (make-local-variable 'comment-start-skip) "#")
   (set (make-local-variable 'font-lock-defaults) '((robot-font-lock-keywords))))
