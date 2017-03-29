@@ -113,6 +113,16 @@ NAME if given is used as the robot test name."
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
 
+;; Add alignment rules for align-current in robot-mode
+(with-eval-after-load 'align
+  ;; Quieten the byte-compiler
+  (eval-when-compile (defvar align-rules-list))
+  (add-to-list 'align-rules-list '(robot-mode-align-test-data
+                                   (regexp . "\\(  +\\)")
+                                   (modes . '(robot-mode))
+                                   (repeat . t)
+                                   (spacing . 4))))
+
 (provide 'robot-mode)
 
 ;;; robot-mode.el ends here
