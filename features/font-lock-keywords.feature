@@ -12,8 +12,7 @@ Feature: Font lock keywords
     When I place the cursor after "My"
     Then current point should have the font-lock-function-name-face face
 
-  @known-failure
-  Scenario: Keyword usage
+  Scenario: Keyword usage (spaces)
     When I insert:
     """
     My Test
@@ -21,5 +20,16 @@ Feature: Font lock keywords
     """
     When I place the cursor after "Start"
     Then current point should have the font-lock-preprocessor-face face
-    When I place the cursor after "ls"
+    When I place the cursor before "ls"
+    Then current point should have no face
+
+  Scenario: Keyword usage (pipes)
+    When I insert:
+    """
+    My Test |
+            |   Start process | ls | -l
+    """
+    When I place the cursor after "Start"
+    Then current point should have the font-lock-preprocessor-face face
+    When I place the cursor before "ls"
     Then current point should have no face

@@ -53,6 +53,9 @@
     ("\\*\\*\\* [^\\*]+ \\*\\*\\*" . font-lock-keyword-face)
     ;;keyword definitions
     ("^[^ \t\n].+" . font-lock-function-name-face)
+    ;; keyword usage (keywords are terminated by multiple spaces or a
+    ;;space-surrounded pipe character)
+    ("^[ \t|]+\\(.*?\\)\\(  \\| | \\)" 1 font-lock-preprocessor-face)
     ;;Variables
     ("\\(\\$\\|@\\){\\( ?[^ }$]\\)+}" 0 font-lock-variable-name-face t)
     ;;tags etc
