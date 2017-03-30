@@ -47,8 +47,6 @@
 ;; robot-font-lock-keywords as defined in the original robot-mode.el
 (defvar robot-font-lock-keywords
   '(
-    ;;normal comment
-    ("#.*" . font-lock-comment-face)
     ;;Section headers
     ("\\*\\*\\* [^\\*]+ \\*\\*\\*" . font-lock-keyword-face)
     ;;keyword definitions

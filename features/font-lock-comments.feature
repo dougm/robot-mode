@@ -12,15 +12,13 @@ Feature: Font lock comments
     When I place the cursor after "A"
     Then current point should have the font-lock-comment-face face
 
-  @known-failure
   Scenario: Non-comment hashes
     When I insert:
     """
-    My Test
-        Log Not \# A comment
+    Log Not \# A comment
     """
     When I place the cursor after "A"
-    Then current point should have the font-lock-function-name face
+    Then current point should have the font-lock-function-name-face face
 
   @known-failure
   Scenario: Comment keyword comments
