@@ -6,4 +6,6 @@
 (source melpa-stable)
 
 (development
- (depends-on "package-lint"))
+ (depends-on "package-lint")
+ (depends-on "ecukes")
+ (depends-on "espuds"))
