@@ -26,3 +26,7 @@
   (lambda (something)
     ;; ...
     ))
+
+(When "^I call align-current$"
+      (lambda ()
+        (call-interactively #'align-current)))

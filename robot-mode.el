@@ -108,7 +108,12 @@ NAME if given is used as the robot test name."
   :syntax-table robot-syntax-table
   (set (make-local-variable 'comment-start) "#")
   (set (make-local-variable 'comment-start-skip) "#")
-  (set (make-local-variable 'font-lock-defaults) '((robot-font-lock-keywords))))
+  (set (make-local-variable 'font-lock-defaults) '((robot-font-lock-keywords)))
+
+  ;; We need to set this otherwise emacs inserts tabs for alignment. It's
+  ;; probably a good idea anyway because Robot Framework converts tabs to spaces
+  ;; (see 2.1.4 Rules for parsing the data in the user guide).
+  (setq-local indent-tabs-mode nil))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
@@ -118,9 +123,9 @@ NAME if given is used as the robot test name."
   ;; Quieten the byte-compiler
   (eval-when-compile (defvar align-rules-list))
   (add-to-list 'align-rules-list '(robot-mode-align-test-data
-                                   (regexp . "\\(  +\\)")
-                                   (modes . '(robot-mode))
-                                   (repeat . t)
+                                   (regexp  . "\\(  +\\)")
+                                   (modes   . '(robot-mode))
+                                   (repeat  . t)
                                    (spacing . 4))))
 
 (provide 'robot-mode)
