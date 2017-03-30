@@ -3,7 +3,8 @@
 ;; Author: Doug MacEachern
 ;; URL: https://github.com/dougm/robot-mode
 ;; Version: 0.1.0
-;; Keywords: robot, tests
+;; Package-Requires: ((emacs "24.4"))
+;; Keywords: convenience, languages, processes, tools
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
@@ -22,6 +23,8 @@
 
 ;;; Commentary:
 
+;; A major mode for editing and running Robot Framework tests
+
 ;;; Code:
 
 (require 'subr-x)
@@ -32,28 +35,37 @@
     (define-key map (kbd "C-c m") 'robot-run-current-file)
     (define-key map (kbd "C-c .") 'robot-run-current-test)
     map)
-  "Keymap used in Robot mode.")
+  "Keymap used in `robot-mode'.")
 
-;; robot-font-lock-keywords as defined in the original robot-mode.el
+(defconst robot-syntax-table
+  (let ((table (make-syntax-table)))
+    (modify-syntax-entry ?# "<" table)
+    (modify-syntax-entry ?\n ">" table)
+    table)
+  "Syntax table for `robot-mode'.")
+
 (defvar robot-font-lock-keywords
   '(
-    ;;normal comment
-    ("#.*" . font-lock-comment-face)
+    ;;comment kw, this takes priority over other faces
+    ("^\\s-*[cC]omment  .*" . font-lock-comment-face)
+
     ;;Section headers
     ("\\*\\*\\* [^\\*]+ \\*\\*\\*" . font-lock-keyword-face)
     ;;keyword definitions
     ("^[^ \t\n].+" . font-lock-function-name-face)
+    ;; keyword usage (keywords are terminated by multiple spaces, a
+    ;;space-surrounded pipe character or end-of-line)
+    ("^[ \t|]+\\(.*?\\)\\(  \\| | \\|$\\)" 1 font-lock-preprocessor-face)
     ;;Variables
     ("\\(\\$\\|@\\){\\( ?[^ }$]\\)+}" 0 font-lock-variable-name-face t)
     ;;tags etc
     ("\\[[^\]]+\\]+" . font-lock-constant-face)
-    ;;comment kw
-    ("comment  .*" . font-lock-comment-face)
-    ))
+    )
+  "Expressions to highlight in `robot-mode'.")
 
 ;; (setq robot-program (concat (projectile-project-root) "tests/local-integration-test.sh"))
 (defvar robot-program "pybot"
-  "Default robot program.")
+  "Default program to run tests with in `robot-mode'.")
 
 (defun robot-current-test ()
   "Find current robot test."
@@ -66,7 +78,7 @@
     test-name))
 
 (defun robot-run (file &optional name)
-  "Run robot-program FILE.
+  "Run `robot-program' FILE.
 NAME if given is used as the robot test name."
   (let ((cmd (concat robot-program (if name (concat " -t '" name "'")) " " file)))
     (compile cmd)))
@@ -93,12 +105,28 @@ NAME if given is used as the robot test name."
   "Major mode for editing and running Robot tests.
 
 \\{robot-mode-map}"
+  :syntax-table robot-syntax-table
   (set (make-local-variable 'comment-start) "#")
   (set (make-local-variable 'comment-start-skip) "#")
-  (set (make-local-variable 'font-lock-defaults) '((robot-font-lock-keywords))))
+  (set (make-local-variable 'font-lock-defaults) '((robot-font-lock-keywords)))
+
+  ;; We need to set this otherwise emacs inserts tabs for alignment. It's
+  ;; probably a good idea anyway because Robot Framework converts tabs to spaces
+  ;; (see 2.1.4 Rules for parsing the data in the user guide).
+  (setq-local indent-tabs-mode nil))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.robot\\'" . robot-mode))
+
+;; Add alignment rules for align-current in robot-mode
+(with-eval-after-load 'align
+  ;; Quieten the byte-compiler
+  (eval-when-compile (defvar align-rules-list))
+  (add-to-list 'align-rules-list '(robot-mode-align-test-data
+                                   (regexp  . "\\(  +\\)")
+                                   (modes   . '(robot-mode))
+                                   (repeat  . t)
+                                   (spacing . 4))))
 
 (provide 'robot-mode)
 
