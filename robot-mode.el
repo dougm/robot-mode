@@ -4,7 +4,7 @@
 ;; URL: https://github.com/dougm/robot-mode
 ;; Version: 0.1.0
 ;; Package-Requires: ((emacs "24.4"))
-;; Keywords: robot, tests
+;; Keywords: convenience, languages, processes, tools
 
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License
