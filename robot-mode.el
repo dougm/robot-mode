@@ -23,6 +23,8 @@
 
 ;;; Commentary:
 
+;; A major mode for editing and running Robot Framework tests
+
 ;;; Code:
 
 (require 'subr-x)
