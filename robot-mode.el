@@ -47,6 +47,9 @@
 ;; robot-font-lock-keywords as defined in the original robot-mode.el
 (defvar robot-font-lock-keywords
   '(
+    ;;comment kw, this takes priority over other faces
+    ("^\\s-*[cC]omment  .*" . font-lock-comment-face)
+
     ;;Section headers
     ("\\*\\*\\* [^\\*]+ \\*\\*\\*" . font-lock-keyword-face)
     ;;keyword definitions
@@ -58,8 +61,6 @@
     ("\\(\\$\\|@\\){\\( ?[^ }$]\\)+}" 0 font-lock-variable-name-face t)
     ;;tags etc
     ("\\[[^\]]+\\]+" . font-lock-constant-face)
-    ;;comment kw
-    ("comment  .*" . font-lock-comment-face)
     ))
 
 ;; (setq robot-program (concat (projectile-project-root) "tests/local-integration-test.sh"))

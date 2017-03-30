@@ -20,7 +20,6 @@ Feature: Font lock comments
     When I place the cursor after "A"
     Then current point should have the font-lock-function-name-face face
 
-  @known-failure
   Scenario: Comment keyword comments
     When I insert:
     """
