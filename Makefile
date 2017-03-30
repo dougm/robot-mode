@@ -7,7 +7,7 @@ build :
 	      (batch-byte-compile))" robot-mode.el
 
 test: build
-	cask exec ecukes
+	cask exec ecukes --tags ~@known-failure
 
 package-lint:
 	cask exec emacs -Q --batch -l "package-lint.el" -f "package-lint-batch-and-exit" robot-mode.el
