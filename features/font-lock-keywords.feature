@@ -33,3 +33,21 @@ Feature: Font lock keywords
     Then current point should have the font-lock-preprocessor-face face
     When I place the cursor before "ls"
     Then current point should have no face
+
+  Scenario: Keyword usage (spaces, no arguments)
+    When I insert:
+    """
+    My Test
+        Start process
+    """
+    When I place the cursor after "Start"
+    Then current point should have the font-lock-preprocessor-face face
+
+  Scenario: Keyword usage (pipes, no arguments)
+    When I insert:
+    """
+    My Test |
+            |   Start process
+    """
+    When I place the cursor after "Start"
+    Then current point should have the font-lock-preprocessor-face face
