@@ -35,16 +35,15 @@
     (define-key map (kbd "C-c m") 'robot-run-current-file)
     (define-key map (kbd "C-c .") 'robot-run-current-test)
     map)
-  "Keymap used in Robot mode.")
+  "Keymap used in `robot-mode'.")
 
 (defconst robot-syntax-table
   (let ((table (make-syntax-table)))
     (modify-syntax-entry ?# "<" table)
     (modify-syntax-entry ?\n ">" table)
     table)
-  "Syntax table for Robot mode.")
+  "Syntax table for `robot-mode'.")
 
-;; robot-font-lock-keywords as defined in the original robot-mode.el
 (defvar robot-font-lock-keywords
   '(
     ;;comment kw, this takes priority over other faces
@@ -61,11 +60,12 @@
     ("\\(\\$\\|@\\){\\( ?[^ }$]\\)+}" 0 font-lock-variable-name-face t)
     ;;tags etc
     ("\\[[^\]]+\\]+" . font-lock-constant-face)
-    ))
+    )
+  "Expressions to highlight in `robot-mode'.")
 
 ;; (setq robot-program (concat (projectile-project-root) "tests/local-integration-test.sh"))
 (defvar robot-program "pybot"
-  "Default robot program.")
+  "Default program to run tests with in `robot-mode'.")
 
 (defun robot-current-test ()
   "Find current robot test."
@@ -78,7 +78,7 @@
     test-name))
 
 (defun robot-run (file &optional name)
-  "Run robot-program FILE.
+  "Run `robot-program' FILE.
 NAME if given is used as the robot test name."
   (let ((cmd (concat robot-program (if name (concat " -t '" name "'")) " " file)))
     (compile cmd)))
